@@ -14,6 +14,7 @@ Milestones:
     - [x] Verify integrity of reconstructed files with a full file hash.
 - [x] Variable-size chunks with content-defined chunking
     - [x] Add a mask heuristic along with chunk size limits to the Rabin fingerprinting rolling hash scheme.
-- [ ] Multi-file support
-    - [ ] Preprocess multiple files for candidate chunks.
-    - [ ] Construct files that are a mixture of chunks from different files.
+    - [x] Confirm that files can still be reconstructed from indexed chunks, even with modified source files.
+- [x] Multi-file support
+    - [x] Preprocess multiple files for candidate chunks.
+    - [x] Construct files that are a mixture of chunks from different files.

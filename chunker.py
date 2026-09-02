@@ -29,8 +29,6 @@ def save_chunks(file_path):
 
     for offset, chunk_data in rabin_karp_chunks(data):
         chunk_hash = hashlib.sha256(chunk_data).hexdigest()
-        print(chunk_hash)
-
         db.execute("INSERT OR IGNORE INTO chunks (chunk_hash, file_path, file_offset, chunk_size) VALUES (?, ?, ?, ?)",
                     (chunk_hash, file_path, offset, len(chunk_data)))
     conn.commit()
@@ -44,7 +42,7 @@ def retrieve_chunk(target_hash):
     if (len(matches) == 0):
         return
     if (len(matches) > 1):
-        print("Hash collision!!")
+        print("Hash collision!!") # Not handling it in this demo as it requires the full synchronisation protocol
 
     path, offset, size = matches[0]
     with open(path, "rb") as f:
@@ -58,13 +56,12 @@ def count_matches(file_path):
     """
     count = 0
     with open(file_path, "rb") as f:
-        while True:
-            chunk_data = f.read(chunk_size)
-            if not chunk_data:
-                break
-            chunk_hash = hashlib.sha256(chunk_data).hexdigest()
-            if retrieve_chunk(chunk_hash):
-                count += 1
+        data = f.read()
+
+    for _, chunk_data in rabin_karp_chunks(data):
+        chunk_hash = hashlib.sha256(chunk_data).hexdigest()
+        if retrieve_chunk(chunk_hash):
+            count += 1
     print("{} has {} chunk matches in index".format(file_path, count))
     return count
 
@@ -82,7 +79,6 @@ if args.input:
 if args.generate:
     with open(args.generate, "rb") as f:
         data = f.read()
-
     for offset, chunk_data in rabin_karp_chunks(data):
         chunk_hash = hashlib.sha256(chunk_data).hexdigest()
         print(chunk_hash)
@@ -98,4 +94,7 @@ if args.reconstruct:
             if chunk:
                 out.write(chunk)
             else:
-                out.write(b"#### [missing chunk] ####") # TODO: Change to seek from original file to simulate sending from client
+                # This functionality cannot be implemented seperately from the synchronisation protocol.
+                # It relies on the client keeping track of where it's up to in the source file.
+                print("Missing chunk. Fetching directly from file")
+                out.write(b"#### [missing chunk] ####")
