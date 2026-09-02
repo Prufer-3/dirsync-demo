@@ -1,7 +1,9 @@
 # dirsync-demo
 
 This is a demo of the file chunking functionality described in the design document, written in Python.
-It's not reflective of how it might look in the actual system, since the synchronisation protocol hasn't been implemented. Instead, it serves to demonstrate the effectiveness of cached chunks in reducing bandwidth requirements.
+I chose to implement this component since it's crucial for achieving the core requirement of bandwidth efficiency in my design.
+
+It's different to how it might look in the completed system, since my proposed synchronisation protocol hasn't been implemented, but the core algorithm is the same.
 
 Quick demo: `python3 chunker.py -d`
 
@@ -13,8 +15,8 @@ Example workflow:
 python3 chunker.py -i ./text_data/the_adventures_of_sherlock_holmes.txt
 python3 chunker.py -i ./text_data/pride_and_prejudice.txt
 
-python3 chunker.py -m ./the_pride_and_prejudice_of_sherlock_holmes.txt
-python3 chunker.py -g ./the_pride_and_prejudice_of_sherlock_holmes.txt > /tmp/hashes.txt
+python3 chunker.py -m ./text_data/the_pride_and_prejudice_of_sherlock_holmes.txt
+python3 chunker.py -g ./text_data/the_pride_and_prejudice_of_sherlock_holmes.txt > /tmp/hashes.txt
 python3 chunker.py -r /tmp/hashes.txt
 ```
 

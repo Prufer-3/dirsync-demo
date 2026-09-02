@@ -67,9 +67,6 @@ args = parser.parse_args()
 if args.demo:
     print("=== Running demo ===")
 
-    if os.path.exists("./chunks.db"):
-        os.remove("./chunks.db")
-
     conn = sqlite3.connect(":memory:")
     db = conn.cursor()
     db.executescript("""
@@ -133,7 +130,7 @@ if args.demo:
     print("{} / {} chunks still available in index\n".format(hits, total))
 
 else:
-    conn = sqlite3.connect(":memory:")
+    conn = sqlite3.connect("chunks.db")
     db = conn.cursor()
     db.executescript("""
         CREATE TABLE IF NOT EXISTS chunks (
