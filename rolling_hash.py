@@ -7,8 +7,10 @@ def rabin_karp_chunks(
     """
     Splits data into variable-sized chunks based on content.
 
-    min/max_chunk_size are self explanatory.
+    TODO: Change data to a file path and read data in chunks. Don't want to be hogging memory for larger files.
     
+    Min/max_chunk_size are self explanatory.
+
     target_chunk_size allows the user to specify a desired average chunk size.
         Must be a power of 2 to ensure a correct heuristic due to how bitmasking works.
 
