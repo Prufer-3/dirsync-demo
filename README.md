@@ -6,7 +6,8 @@ It's not reflective of how it might look in the actual system, since the synchro
 Quick demo: `python3 chunker.py -d`
 
 Alternatively, you can manually chunk and index files with chunker.py.
-Use `python3 chunker.py -h` to see option.
+Use `python3 chunker.py -h` to see options.
+
 Example workflow:
 ```
 python3 chunker.py -i ./text_data/the_adventures_of_sherlock_holmes.txt
