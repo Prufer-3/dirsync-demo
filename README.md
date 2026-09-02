@@ -8,10 +8,10 @@ Milestones:
     - [x] Ingest small files and break them into fixed-size chunks.
     - [x] Hash each chunk and store in a database.
     - [x] Lookup chunk metadata by hash and retrieve from file system.
-- [ ] Reconstructing files with chunks from the same file
-    - [ ] Implement functionality to report statistics on chunk matches between files.
-    - [ ] Iteratively reconstruct files (and slightly modified files) with preprocessed chunks.
-    - [ ] Verify integrity of reconstructed files with a full file hash.
+- [x] Reconstructing files with chunks from the same file
+    - [x] Implement functionality to report statistics on chunk matches between files.
+    - [x] Iteratively reconstruct files from hashes.
+    - [x] Verify integrity of reconstructed files with a full file hash.
 - [ ] Fixed-size chunks at all offsets
     - [ ] Start with brute force by reading each chunk and hashing individually.
     - [ ] Implement a rolling hash with Rabin fingerprinting.
