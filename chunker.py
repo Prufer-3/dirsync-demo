@@ -2,7 +2,7 @@ import hashlib
 import sqlite3
 import argparse
 
-chunk_size = 1024
+from rolling_hash import rabin_karp_chunks
 
 conn = sqlite3.connect("chunks.db")
 db = conn.cursor()
@@ -15,22 +15,24 @@ db.executescript("""
         UNIQUE(chunk_hash, file_path, file_offset, chunk_size)
     );
     CREATE INDEX IF NOT EXISTS hash_index ON chunks(chunk_hash);
+    CREATE INDEX IF NOT EXISTS file_index ON chunks(file_path);
 """)
 
 def save_chunks(file_path):
     """
     Breaks a file into chunks and saves it into the hash index.
+    Overwrites any existing entries associated with that file.
     """
+    db.execute("DELETE FROM chunks WHERE file_path = ?", (file_path,))
     with open(file_path, "rb") as f:
-        offset = 0
-        while True:
-            chunk_data = f.read(chunk_size)
-            if not chunk_data:
-                break
-            chunk_hash = hashlib.sha256(chunk_data).hexdigest()
-            db.execute("INSERT OR IGNORE INTO chunks (chunk_hash, file_path, file_offset, chunk_size) VALUES (?, ?, ?, ?)",
+        data = f.read()
+
+    for offset, chunk_data in rabin_karp_chunks(data):
+        chunk_hash = hashlib.sha256(chunk_data).hexdigest()
+        print(chunk_hash)
+
+        db.execute("INSERT OR IGNORE INTO chunks (chunk_hash, file_path, file_offset, chunk_size) VALUES (?, ?, ?, ?)",
                     (chunk_hash, file_path, offset, len(chunk_data)))
-            offset += len(chunk_data)
     conn.commit()
 
 def retrieve_chunk(target_hash):
@@ -79,12 +81,11 @@ if args.input:
 
 if args.generate:
     with open(args.generate, "rb") as f:
-        while True:
-            chunk_data = f.read(chunk_size)
-            if not chunk_data:
-                break
-            chunk_hash = hashlib.sha256(chunk_data).hexdigest()
-            print(chunk_hash)
+        data = f.read()
+
+    for offset, chunk_data in rabin_karp_chunks(data):
+        chunk_hash = hashlib.sha256(chunk_data).hexdigest()
+        print(chunk_hash)
 
 if args.matches:
     count_matches(args.matches)
@@ -97,4 +98,4 @@ if args.reconstruct:
             if chunk:
                 out.write(chunk)
             else:
-                out.write(b"?"*chunk_size) # TODO: Change to seek from original file to simulate sending from client
+                out.write(b"#### [missing chunk] ####") # TODO: Change to seek from original file to simulate sending from client

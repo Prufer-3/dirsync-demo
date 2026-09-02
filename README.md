@@ -12,15 +12,8 @@ Milestones:
     - [x] Implement functionality to report statistics on chunk matches between files.
     - [x] Iteratively reconstruct files from hashes.
     - [x] Verify integrity of reconstructed files with a full file hash.
-- [ ] Fixed-size chunks at all offsets
-    - [ ] Start with brute force by reading each chunk and hashing individually.
-    - [ ] Implement a rolling hash with Rabin fingerprinting.
-    - [ ] Add timing reports for both approaches.
-    - [ ] Check that files are still reconstructed correctly.
+- [x] Variable-size chunks with content-defined chunking
+    - [x] Add a mask heuristic along with chunk size limits to the Rabin fingerprinting rolling hash scheme.
 - [ ] Multi-file support
     - [ ] Preprocess multiple files for candidate chunks.
     - [ ] Construct files that are a mixture of chunks from different files.
-- [ ] Variable-size chunks with content-defined chunking
-    - [ ] Add a mask heuristic along with chunk size limits to the Rabin fingerprinting rolling hash scheme.
-    - [ ] Create a separate database for variable-size chunks.
-    - [ ] Compare index size and performance against fixed-size approach.
