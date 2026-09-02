@@ -4,10 +4,10 @@ This is a demo of the file chunking functionality described in the design docume
 It's not reflective of how it might look in the actual system, since the synchronisation protocol hasn't been implemented. Instead, it serves to demonstrate the effectiveness of cached chunks in reducing bandwidth requirements.
 
 Milestones:
-- [ ] Fixed-size chunks at boundary intervals
-    - [ ] Ingest small files and break them into fixed-size chunks.
-    - [ ] Hash each chunk and store in a database.
-    - [ ] Lookup chunk metadata by hash and retrieve from file system.
+- [x] Fixed-size chunks at boundary intervals
+    - [x] Ingest small files and break them into fixed-size chunks.
+    - [x] Hash each chunk and store in a database.
+    - [x] Lookup chunk metadata by hash and retrieve from file system.
 - [ ] Reconstructing files with chunks from the same file
     - [ ] Implement functionality to report statistics on chunk matches between files.
     - [ ] Iteratively reconstruct files (and slightly modified files) with preprocessed chunks.
